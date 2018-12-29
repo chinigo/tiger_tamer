@@ -1,6 +1,6 @@
 module TigerTamer::Command
   class << self
-    def factory(command, config, pathspec)
+    def factory(command, pathspec, config)
       klass_for(command).new(pathspec, config)
     end
 

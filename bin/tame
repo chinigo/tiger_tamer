@@ -10,4 +10,4 @@ require 'tiger_tamer'
 
 TigerTamer::CLI::Tame.new(ARGV.dup)
   .command
-  .load
+  .load_data

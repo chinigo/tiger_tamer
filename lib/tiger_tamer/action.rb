@@ -1,0 +1,2 @@
+module TigerTamer::Action
+end

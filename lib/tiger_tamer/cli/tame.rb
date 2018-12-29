@@ -20,7 +20,7 @@ class TigerTamer::CLI::Tame
 
     print_help_and_exit(0) if command_name == 'help'
 
-    TigerTamer::Command.factory(command_name, config, parsed.arguments)
+    TigerTamer::Command.factory(command_name, parsed.arguments, config)
   rescue Slop::Error => e
     logger.error(e.message)
     logger.debug(e.backtrace.join("\n"))
