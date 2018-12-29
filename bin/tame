@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+
+Bundler.require
+
+$LOAD_PATH.push File.expand_path('./lib')
+
+require 'tiger_tamer'
+
+TigerTamer::CLI::Tame.new(ARGV.dup)
+  .command
+  .load
