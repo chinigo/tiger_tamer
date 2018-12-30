@@ -1,6 +1,6 @@
 class TigerTamer::Command::Load
   def initialize(pathspec, config)
-    @files = TigerTamer::CLI::FileExpander.new(pathspec, glob).files
+    @files = TigerTamer::CLI::FileExpander.new(pathspec, glob, false).files
     @config = config
   end
 

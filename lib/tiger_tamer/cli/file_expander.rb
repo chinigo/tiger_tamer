@@ -1,25 +1,33 @@
 class TigerTamer::CLI::FileExpander
-  pattr_initialize :pathspec, :glob do
+  pattr_initialize :pathspec, :glob, :require_directory do
     validate
   end
 
   def files
-    @files ||= filenames.map {|f| File.expand_path(f, pathspec.first) }
+    @files ||= filenames.map {|f| File.expand_path(f, (pathspec.first if directory?)) }
   end
 
   private
 
   def validate
     if pathspec.empty?
-      raise Slop::Error, 'Must specify a root directory or file list.'
+      raise Slop::Error, require_directory ?
+        'Must specify root TIGER directory.' :
+        'Must specify root TIGER directory or file list.'
     end
 
     if (nonexistent_file = pathspec.detect {|ps| !File.exists?(ps) })
-      raise Slop::Error, "Specified nonexistent root directory or file: #{nonexistent_file}."
+      raise Slop::Error, require_directory ?
+        "Specified nonexistent root TIGER directory: #{nonexistent_file}." :
+        "Specified nonexistent root TIGER directory or files: #{nonexistent_file}."
+    end
+
+    if require_directory && !directory?
+      raise Slop::Error, 'Must provide root TIGER directory.'
     end
 
     if directory? && pathspec.count > 1
-      raise Slop::Error, 'Cannot specify both a root directory and individual files.'
+      raise Slop::Error, 'Cannot specify both a root TIGER directory and individual files.'
     end
   end
 
