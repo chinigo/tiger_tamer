@@ -1,4 +1,4 @@
-class TigerTamer::Action::DefineTable
+class TigerTamer::Action::DefineTableFromShapefile
   pattr_initialize :db, :config, :shapefile, :table_name
 
   def define

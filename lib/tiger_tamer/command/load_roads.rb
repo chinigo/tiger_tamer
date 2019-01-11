@@ -1,14 +1,14 @@
 module TigerTamer::Command
   class LoadRoads < Load
-    def glob
+    def self.glob
       'ROADS/tl_*_*_roads.zip'
     end
 
-    def desired_files
+    def self.desired_files
       'tl_*_*_roads.*'
     end
 
-    def table_name
+    def self.table_name
       'tiger_roads'
     end
   end

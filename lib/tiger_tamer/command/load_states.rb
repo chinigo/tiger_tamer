@@ -1,14 +1,14 @@
 module TigerTamer::Command
   class LoadStates < Load
-    def glob
+    def self.glob
       'STATE/tl_*_us_state.zip'
     end
 
-    def desired_files
+    def self.desired_files
       'tl_*_us_state.*'
     end
 
-    def table_name
+    def self.table_name
       'tiger_states'
     end
   end

@@ -1,10 +1,4 @@
-class TigerTamer::Command::LoadAll
-  def initialize(pathspec, config)
-    @pathspec = pathspec
-    @files = TigerTamer::CLI::FileExpander.new(pathspec, '*/*', true).files
-    @config = config
-  end
-
+class TigerTamer::Command::LoadAll < TigerTamer::Command::Base
   def load_data
     %w(coastline states counties subdivisions water roads)
       .map {|dataset| TigerTamer::Command.factory(dataset, pathspec, config) }
@@ -13,5 +7,7 @@ class TigerTamer::Command::LoadAll
 
   private
 
-  attr_accessor :config, :pathspec
+  def file_expander
+    @file_expander ||= TigerTamer::CLI::FileExpander.new(pathspec, '*/*', true)
+  end
 end
