@@ -38,12 +38,6 @@ module TigerTamer::Command
       end
     end
 
-    def drop_table!
-      TigerTamer::Action::DropTable
-        .new(db, self.class.table_name)
-        .drop
-    end
-
     private
 
     def files

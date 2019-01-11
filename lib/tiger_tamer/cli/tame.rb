@@ -1,10 +1,12 @@
 class TigerTamer::CLI::Tame
   Config = Struct.new(
     :connection,      # URL to postgres database
+    :derive,          # Create derived, highly indexed tables. (Default: true)
     :drop_database,   # Drop the database before beginning. (Default: false)
     :drop_table,      # Drop existing table before loading data. (Default: false)
     :log_file,        # Path to log file. (Default: <project_root>/log/tame.log)
     :verbose,         # Enable verbose logging to STDOUT. (Log file is always verbose.)
+    :projection,      # Re-project derived tables to the specified SRID. (Default TigerTamer::SRID)
     :pg_restore_bin,  # Path to pg_restore. (Default: `which pg_restore`)
     :psql_bin,        # Path to psql. (Default: `which psql`)
     :shp2pgsql_bin,   # Path to PostGIS's shp2pgsql binary. (Default: `which shp2pgsql`)
@@ -92,6 +94,19 @@ class TigerTamer::CLI::Tame
           You must specify the root TIGER directory for the 'all' command.
       EOD
 
+      o.separator '  Content options:'
+
+      o.bool '-d',
+        '--derive',
+        'Create derived, highly indexed tables. (Default: true)',
+        default: true
+
+      o.string '-p',
+        '--projection',
+        "Re-project derived tables to the specified SRID. (Default #{TigerTamer::SRID})",
+        default: TigerTamer::SRID
+
+      o.separator ''
       o.separator '  Database options:'
 
       o.string '-c',
@@ -168,6 +183,16 @@ class TigerTamer::CLI::Tame
 
         Load county subdivisions for all of New England:
           $ tame subdivisions ./TIGER/2018/COUSUB/tl_2018_{09,23,25,33,44,50}_cousub.zip
+
+        Create tailored, derived tables with foreign keys (default behavior):
+          $ tame states --derived ./TIGER/2018
+          $ tame counties --derived ./TIGER/2018
+
+        Skip derived tables to save space:
+          $ tame states --no-derived ./TIGER/2018
+
+        Re-project derived tables (SRID must exist in spatial_ref_sys):
+          $ tame all --projection 4326 ./TIGER/2018
 
         Multiple partial loads:
           $ tame subdivisions --drop-table ./TIGER/2018/COUSUB/tl_2018_36_cousub.zip
