@@ -8,7 +8,7 @@ class TigerTamer::Action::DefineTable
       logger.info("Generating schema for #{table_name}.")
 
       TigerTamer::CLI.run <<~EOC
-        #{config.shp2pgsql_bin} -p -I -s #{TigerTamer::TIGER_SRID} #{shapefile} #{table_name} |\
+        #{config.shp2pgsql_bin} -p -I -s #{TigerTamer::SRID} #{shapefile} #{table_name} |\
         #{config.psql_bin} -d #{config.connection}
       EOC
     end
