@@ -1,10 +1,8 @@
 class TigerTamer::CLI::Tame
   Config = Struct.new(
     :connection,      # URL to postgres database
-    :create_database, # Create database if it doesn't exist.
-    :create_tables,   # Create the table structure if it doesn't exist. Structure inferred from first specified file.
     :drop_database,   # Drop the database before beginning. (Default: false)
-    :drop_tables,     # Drop existing tables before loading data. (Default: false)
+    :drop_table,      # Drop existing table before loading data. (Default: false)
     :log_file,        # Path to log file. (Default: <project_root>/log/tame.log)
     :verbose,         # Enable verbose logging to STDOUT. (Log file is always verbose.)
     :pg_restore_bin,  # Path to pg_restore. (Default: `which pg_restore`)
@@ -15,19 +13,27 @@ class TigerTamer::CLI::Tame
 
   pattr_initialize :args
 
-  def command
-    TigerTamer::Util::Logging.setup(config.log_file, config.verbose)
-
-    print_help_and_exit(0) if command_name == 'help'
-
-    TigerTamer::Command.factory(command_name, parsed.arguments, config)
-  rescue Slop::Error => e
-    logger.error(e.message)
-    logger.debug(e.backtrace.join("\n"))
-    print_help_and_exit(1)
+  def run
+    command.drop_database! if config.drop_database
+    command.create_database!
+    command.load_data
   end
 
   private
+
+  def command
+    @command ||= begin
+      TigerTamer::Util::Logging.setup(config.log_file, config.verbose)
+
+      print_help_and_exit(0) if command_name == 'help'
+
+      TigerTamer::Command.factory(command_name, parsed.arguments, config)
+    rescue Slop::Error => e
+      logger.error(e.message)
+      logger.debug(e.backtrace.join("\n"))
+      print_help_and_exit(1)
+    end
+  end
 
   def print_help_and_exit(exit_code)
     puts opts.to_s(prefix: '    ')
@@ -93,24 +99,14 @@ class TigerTamer::CLI::Tame
         'Postgres connection URL. (Default: postgres://localhost/tiger)',
         default: 'postgres://localhost/tiger'
 
-      o.bool '-d',
-        '--create-database',
-        'Create the database if it doesn\'t exist. (Default: true)',
-        default: true
-
       o.bool '-D',
         '--drop-database',
         'Drop the database before beginning. (Default: false)',
         default: false
 
-      o.bool '-t',
-        '--create-tables',
-        'Create the table structure if it doesn\'t exist. Structure inferred from first specified file. (Default: true)',
-        default: true
-
       o.bool '-T',
-        '--drop-tables',
-        'Drop existing tables before loading data. (Default: false)',
+        '--drop-table',
+        'Drop existing table before loading data. (Default: false)',
         default: false
 
 
@@ -158,11 +154,11 @@ class TigerTamer::CLI::Tame
         Load an entire or a partially-downloaded TIGER dataset into a local database:
           $ tame all ./TIGER/2018
 
-        Presuming the database already exists:
-          $ tame all --no-create-database ./TIGER/2018
-
         Erase database before starting over:
-          $ table all --drop-database ./TIGER/2018
+          $ tame all --drop-database ./TIGER/2018
+
+        Or erase a particular table:
+          $ tame counties --drop-table ./TIGER/2018
 
         Using an external database:
           $ tame all --connection postgres://maps.chinigo.net/tiger_2018 ./TIGER/2018
@@ -174,9 +170,9 @@ class TigerTamer::CLI::Tame
           $ tame subdivisions ./TIGER/2018/COUSUB/tl_2018_{09,23,25,33,44,50}_cousub.zip
 
         Multiple partial loads:
-          $ tame subdivisions --drop-tables ./TIGER/2018/COUSUB/tl_2018_36_cousub.zip
-          $ tame subdivisions --no-drop-tables ./TIGER/2018/COUSUB/tl_2018_37_cousub.zip
-          $ tame subdivisions --no-drop-tables ./TIGER/2018/COUSUB/tl_2018_38_cousub.zip
+          $ tame subdivisions --drop-table ./TIGER/2018/COUSUB/tl_2018_36_cousub.zip
+          $ tame subdivisions --no-drop-table ./TIGER/2018/COUSUB/tl_2018_37_cousub.zip
+          $ tame subdivisions --no-drop-table ./TIGER/2018/COUSUB/tl_2018_38_cousub.zip
 
         If your PostGIS installation isn't on your $PATH:
           $ tame all --shp2pgsql-bin=/var/postgis/bin/shp2pgsql ./TIGER/2018

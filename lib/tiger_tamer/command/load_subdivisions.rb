@@ -1,14 +1,14 @@
 module TigerTamer::Command
   class LoadSubdivisions < Load
-    def glob
+    def self.glob
       'COUSUB/tl_*_*_cousub.zip'
     end
 
-    def desired_files
+    def self.desired_files
       'tl_*_*_cousub.*'
     end
 
-    def table_name
+    def self.table_name
       'tiger_subdivisions'
     end
   end
