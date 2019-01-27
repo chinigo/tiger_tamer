@@ -1,4 +1,4 @@
-class TigerTamer::Action::DefineTableFromDDL
+class TigerTamer::Action::DefineTableFromDdl
   pattr_initialize :db, :config, :ddl, :table_name
 
   def define

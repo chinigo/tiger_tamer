@@ -7,7 +7,7 @@ class TigerTamer::Action::DefineTableFromShapefile
     else
       logger.info("Generating schema for #{table_name}.")
 
-      TigerTamer::CLI.run <<~EOC
+      TigerTamer::Cli.run <<~EOC
         #{config.shp2pgsql_bin} -p -I -s #{TigerTamer::SRID} #{shapefile} #{table_name} |\
         #{config.psql_bin} -d #{config.connection}
       EOC

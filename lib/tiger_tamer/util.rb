@@ -1,2 +1,0 @@
-module TigerTamer::Util
-end

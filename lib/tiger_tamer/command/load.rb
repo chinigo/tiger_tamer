@@ -36,7 +36,7 @@ class TigerTamer::Command::Load < TigerTamer::Command::Base
     end
 
   def file_expander
-    @file_expander ||= TigerTamer::CLI::FileExpander.new(pathspec, self.class.glob, false)
+    @file_expander ||= TigerTamer::Cli::FileExpander.new(pathspec, self.class.glob, false)
   end
 
   def zipfiles
@@ -68,7 +68,7 @@ class TigerTamer::Command::Load < TigerTamer::Command::Base
   end
 
   def define_derived_table!
-    TigerTamer::Action::DefineTableFromDDL
+    TigerTamer::Action::DefineTableFromDdl
       .new(db, config, derived_ddl, self.class.derived_table_name)
       .define
   end

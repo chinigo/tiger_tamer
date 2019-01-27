@@ -4,8 +4,6 @@ require 'bundler/setup'
 
 Bundler.require
 
-$LOAD_PATH.push File.expand_path('./lib')
+require_relative '../lib/tiger_tamer'
 
-require 'tiger_tamer'
-
-TigerTamer::CLI::Tame.new(ARGV.dup).run
+TigerTamer::Cli::Tame.new(ARGV.dup).run

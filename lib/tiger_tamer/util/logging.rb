@@ -9,7 +9,7 @@ class TigerTamer::Util::Logging
     ::Logging.color_scheme(
       :stdout_scheme,
       levels: {
-        trace: :white,
+        trace: %i(dark white),
         debug: :cyan,
         info:  :green,
         warn:  :yellow,
@@ -46,6 +46,10 @@ class TigerTamer::Util::Logging
     )
 
     ::Logging.logger.root.add_appenders :file
+
+    Zeitwerk::Registry.loaders.each do |l|
+      l.logger = Logging.logger['Zeitwerk'].method(:trace)
+    end
 
     @already_setup = true
   end

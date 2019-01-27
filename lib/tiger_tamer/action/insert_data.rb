@@ -9,7 +9,7 @@ class TigerTamer::Action::InsertData
   private
 
   def generate_dump(shapefile)
-    TigerTamer::CLI.run <<~EOC
+    TigerTamer::Cli.run <<~EOC
       #{config.shp2pgsql_bin} -a -s #{TigerTamer::SRID} -D #{shapefile} #{table_name} |\
       #{config.psql_bin} #{config.connection}
     EOC

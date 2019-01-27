@@ -1,4 +1,4 @@
-class TigerTamer::CLI::FileExpander
+class TigerTamer::Cli::FileExpander
   pattr_initialize :pathspec, :glob, :require_directory do
     validate
   end

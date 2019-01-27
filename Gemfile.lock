@@ -26,11 +26,11 @@ GEM
     pry-byebug (3.6.0)
       byebug (~> 10.0)
       pry (~> 0.10)
-    require_all (2.0.0)
     slop (4.6.2)
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    zeitwerk (1.0.0.beta2)
 
 PLATFORMS
   ruby
@@ -41,8 +41,8 @@ DEPENDENCIES
   logging
   pg
   pry-byebug
-  require_all
   slop
+  zeitwerk
 
 BUNDLED WITH
    1.17.3

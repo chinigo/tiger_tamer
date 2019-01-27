@@ -1,4 +1,4 @@
-class TigerTamer::CLI::Tame
+class TigerTamer::Cli::Tame
   Config = Struct.new(
     :connection,      # URL to postgres database
     :derive,          # Create derived, highly indexed tables. (Default: true)

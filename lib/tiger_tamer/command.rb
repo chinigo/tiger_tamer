@@ -25,7 +25,7 @@ module TigerTamer::Command
           .create
       end
 
-      TigerTamer::Action::InstallPostGIS
+      TigerTamer::Action::InstallPostgis
         .new(db)
         .install
     end

@@ -1,6 +1,6 @@
 require 'open3'
 
-module TigerTamer::CLI
+module TigerTamer::Cli
   def self.run(cmd, log_level=:trace)
     logger.send(log_level, cmd)
 

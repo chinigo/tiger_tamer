@@ -1,4 +1,4 @@
-class TigerTamer::Action::InstallPostGIS
+class TigerTamer::Action::InstallPostgis
   pattr_initialize :conn
 
   def install

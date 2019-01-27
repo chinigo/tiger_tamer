@@ -1,3 +1,5 @@
+require 'tmpdir'
+
 class TigerTamer::Action::UnzipFile
   pattr_initialize :unzip_bin, :zipfile, :desired_files
 
@@ -28,6 +30,6 @@ class TigerTamer::Action::UnzipFile
   end
 
   def unzip!
-    TigerTamer::CLI.run %|#{unzip_bin} #{zipfile} #{desired_files} -d #{tmp_dir}|
+    TigerTamer::Cli.run %|#{unzip_bin} #{zipfile} #{desired_files} -d #{tmp_dir}|
   end
 end

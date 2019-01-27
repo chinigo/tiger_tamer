@@ -8,6 +8,6 @@ class TigerTamer::Command::LoadAll < TigerTamer::Command::Base
   private
 
   def file_expander
-    @file_expander ||= TigerTamer::CLI::FileExpander.new(pathspec, '*/*', true)
+    @file_expander ||= TigerTamer::Cli::FileExpander.new(pathspec, '*/*', true)
   end
 end
