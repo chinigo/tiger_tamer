@@ -22,7 +22,7 @@ module TigerTamer::Command
       end
 
       def derived_dependencies
-        []
+        [LoadRoads]
       end
     end # self
 

@@ -22,7 +22,7 @@ module TigerTamer::Command
       end
 
       def derived_dependencies
-        [LoadCounties, LoadWater]
+        [LoadCounties, LoadWater, LoadRoads]
       end
     end # self
 

@@ -33,7 +33,7 @@ class TigerTamer::Command::Load < TigerTamer::Command::Base
 
   def derive_sql
     [ copy_derived_data ]
-    end
+  end
 
   def file_expander
     @file_expander ||= TigerTamer::Cli::FileExpander.new(pathspec, self.class.glob, false)
